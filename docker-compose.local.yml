@@ -1,0 +1,34 @@
+volumes:
+  dreivis_proj_local_postgres_data: {}
+  dreivis_proj_local_postgres_data_backups: {}
+  
+
+services:
+  django:
+    build:
+      context: .
+      dockerfile: ./compose/local/django/Dockerfile
+    image: dreivis_proj_local_django
+    container_name: dreivis_proj_local_django
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app:z
+    env_file:
+      - ./.envs/.local/.django
+      - ./.envs/.local/.postgres
+    ports:
+      - '8000:8000'
+    command: /start
+
+  postgres:
+    build:
+      context: .
+      dockerfile: ./compose/production/postgres/Dockerfile
+    image: dreivis_proj_production_postgres
+    container_name: dreivis_proj_local_postgres
+    volumes:
+      - dreivis_proj_local_postgres_data:/var/lib/postgresql/data
+      - dreivis_proj_local_postgres_data_backups:/backups
+    env_file:
+      - ./.envs/.local/.postgres

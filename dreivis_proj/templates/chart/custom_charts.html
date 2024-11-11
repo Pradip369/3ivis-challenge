@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+{% load nvd3_tags %}
+<head>
+    {% load_chart chart_type chart_data chart_container %}
+</head>
+<body>
+
+
+<div class="container-sm">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+    <hr/>
+
+    <h3>Fruits vs Calories</h3>
+    <center>
+          {% include_container chart_container 600 600 %}
+    </center>
+<br><br/>
+</body>
+{% endblock content %}
+
+
